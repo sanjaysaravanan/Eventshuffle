@@ -10,9 +10,8 @@
   <li>Get results of the suitable as per the votes for dates on a specific events</li>
 </ul>
 
-<video autoplay width="250">
-  <source src="./event-shuffle.mp4" type="video/mp4" />
-</video>
+<h2>Demonstration</h2>
+<img src="./event-shuffle.gif" alt="Demonstration" />
 
 <h2>Development Setup Scripts</h2>
 ```

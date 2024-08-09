@@ -7,7 +7,10 @@ import { EventProps, VoteProp } from "../schema/types";
 
 export const getAllEvents = async (_req: Request, res: Response) => {
   try {
-    const events = await ShuffleEvent.find({}, { id: 1, name: 1, _id: 0 });
+    const events = await ShuffleEvent.find(
+      {},
+      { id: 1, name: 1, dates: 1, _id: 0 }
+    );
     res.json(events);
   } catch (err) {
     console.error(err);
@@ -27,7 +30,11 @@ export const getAnEvent = async (req: Request, res: Response) => {
       { id: req.params.id },
       { _id: 0, __v: 0 }
     );
-    res.json(event);
+    if (event) {
+      res.json(event);
+    } else {
+      res.status(404).send({ msg: "Event Not Found" });
+    }
   } catch (err) {
     console.error(err);
     if (err instanceof Error) {
@@ -83,13 +90,13 @@ export const getEventResults = async (req: Request, res: Response) => {
 export const createAnEvent = async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    console.log(body);
+    const id = v4();
     const newEvent = new ShuffleEvent({
       ...body,
-      id: v4(),
+      id,
     });
-    const savedEvent = await newEvent.save();
-    res.status(200).json(savedEvent);
+    await newEvent.save();
+    res.status(200).json({ id });
   } catch (err) {
     console.error(err);
     if (err instanceof MongooseError.ValidationError) {
@@ -111,33 +118,37 @@ export const voteForAnEvent = async (req: Request, res: Response) => {
       await ShuffleEvent.findOne({ id: req.params.id }, { _id: 0, __v: 0 })
     )?.toObject();
 
-    const { votes: payloadVotes = [], name = "" } = body as EventProps;
-    const { votes = [] } = event as EventProps;
+    if (event) {
+      const { votes: payloadVotes = [], name = "" } = body as EventProps;
+      const { votes = [] } = event as EventProps;
 
-    payloadVotes.forEach((v) => {
-      const index = votes?.findIndex((vote) => (vote as VoteProp).date === v);
+      payloadVotes.forEach((v) => {
+        const index = votes?.findIndex((vote) => (vote as VoteProp).date === v);
 
-      if (index === -1) {
-        votes?.push({
-          date: v,
-          people: [name],
-        } as VoteProp);
-      } else {
-        const tempVote = { ...votes[index] };
-        if (!(tempVote as VoteProp).people.includes(name)) {
-          (tempVote as VoteProp).people.push(name);
-          votes[index] = tempVote;
+        if (index === -1) {
+          votes?.push({
+            date: v,
+            people: [name],
+          } as VoteProp);
+        } else {
+          const tempVote = { ...votes[index] };
+          if (!(tempVote as VoteProp).people.includes(name)) {
+            (tempVote as VoteProp).people.push(name);
+            votes[index] = tempVote;
+          }
         }
-      }
-    });
+      });
 
-    await ShuffleEvent.updateOne({ id: req.params.id }, { $set: { votes } });
+      await ShuffleEvent.updateOne({ id: req.params.id }, { $set: { votes } });
 
-    const resultEvent = (
-      await ShuffleEvent.findOne({ id: req.params.id }, { _id: 0, __v: 0 })
-    )?.toObject();
+      const resultEvent = (
+        await ShuffleEvent.findOne({ id: req.params.id }, { _id: 0, __v: 0 })
+      )?.toObject();
 
-    res.json(resultEvent);
+      res.json(resultEvent);
+    } else {
+      res.status(404).send({ msg: "Event Not Found" });
+    }
   } catch (err) {
     console.error(err);
     if (err instanceof Error) {

@@ -10,8 +10,9 @@
   <li>Get results of the suitable as per the votes for dates on a specific events</li>
 </ul>
 
-<b>Production:</b>
-<a href="https://flourishing-meerkat-370485.netlify.app/">https://flourishing-meerkat-370485.netlify.app/</a>
+<video autoplay width="250">
+  <source src="./event-shuffle.mp4" type="video/mp4" />
+</video>
 
 <h2>Development Setup Scripts</h2>
 ```
@@ -29,4 +30,20 @@ npm run build
 
 ```
 npm run start-prod
+```
+
+<h2>Development Folder Structure</h2>
+
+```
+root
+  |-> client ( UI Logic using React & Vite )
+  |-> controllers ( API Logic & connection to DB )
+  |-> db-utils
+      |-> mongodb-connnection.ts ( db connection logic )
+  |-> routes
+      |-> events.ts ( mapping the controller logics with corresponding route )
+  |-> schema
+      |-> models.ts ( all the schema/models required )
+      |-> types.ts ( interfaces )
+  |-> server.ts ( Server app initialization, db connection, middleware & server startup)
 ```

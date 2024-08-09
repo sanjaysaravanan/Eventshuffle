@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+
 import eventRouter from "./routes/events";
 import connectViaMongoose from "./db-utils/mongodb-connection";
 
@@ -14,6 +16,7 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
 app.use(logger);
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/v1/event", eventRouter);
 

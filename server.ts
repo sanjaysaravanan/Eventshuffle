@@ -1,10 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
+import path from "path";
 
 import eventRouter from "./routes/events";
 import connectViaMongoose from "./db-utils/mongodb-connection";
 
 const app = express();
+
+// Serve the static files from the React app's build directory
+app.use(express.static(path.join(__dirname, "./client/dist")));
 
 const PORT = process.env.PORT || 8000;
 
@@ -19,6 +23,11 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1/event", eventRouter);
+
+// Handle React routing, return all requests to the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/dist", "index.html"));
+});
 
 connectViaMongoose().then(() => {
   app.listen(PORT, () => {

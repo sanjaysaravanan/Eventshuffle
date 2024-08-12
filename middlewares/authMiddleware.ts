@@ -15,12 +15,10 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    console.log(token);
     // Verify the token
     jwt.verify(token, JWT_SECRET);
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
-    console.log(error);
     return res.status(403).json({ msg: "Invalid or expired token" });
   }
 };

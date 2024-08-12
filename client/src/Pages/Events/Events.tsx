@@ -31,7 +31,7 @@ const Events: React.FC = () => {
           <button
             className="btn btn-danger"
             onClick={() => {
-              localStorage.clear();
+              localStorage.removeItem("token");
               navigate("/login");
             }}
           >

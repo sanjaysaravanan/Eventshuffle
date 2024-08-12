@@ -13,7 +13,13 @@ const Event: React.FC<ComponentProp> = ({
   const votedIds = JSON.parse(localStorage.getItem("voted_ids") || "[]");
 
   return (
-    <div className="border border-black shadow-lg text-center bg-body border-3 p-4 m-2 rounded d-inline-block">
+    <div
+      className="border border-black shadow-lg text-center bg-body border-3 p-4 m-2 rounded d-inline-block"
+      style={{
+        minHeight: 150,
+        width: 300,
+      }}
+    >
       <h1>{name}</h1>
       <button onClick={clickFunc} className="btn btn-primary fs-4 mt-3">
         {(votedIds as string[]).includes(id)

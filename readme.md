@@ -3,6 +3,8 @@
 <b>Operations</b>
 
 <ul>
+  <li>Register an User</li>
+  <li>Login user</li>
   <li>Create an Event</li>
   <li>Get the info about all the events</li>
   <li>Get the info on a specific event</li>
@@ -37,6 +39,7 @@ npm run start-prod
 root
   |-> client ( UI Logic using React & Vite )
   |-> controllers ( API Logic & connection to DB )
+  |-> middlewares ( Middleware for the router )
   |-> db-utils
       |-> mongodb-connnection.ts ( db connection logic )
   |-> routes

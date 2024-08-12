@@ -9,3 +9,8 @@ export interface EventProps {
   dates?: String[];
   votes?: (VoteProp | String)[];
 }
+
+export interface IUser {
+  email: string;
+  password: string;
+}

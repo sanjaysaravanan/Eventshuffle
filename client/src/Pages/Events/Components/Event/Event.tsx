@@ -1,5 +1,5 @@
 import React from "react";
-import { EventProp } from "../../types";
+import { EventProp } from "../../../../types";
 
 interface ComponentProp extends EventProp {
   clickFunc: () => void;
@@ -24,4 +24,6 @@ const Event: React.FC<ComponentProp> = ({
   );
 };
 
-export default Event;
+const MemoizedEvent = React.memo(Event);
+
+export default MemoizedEvent;

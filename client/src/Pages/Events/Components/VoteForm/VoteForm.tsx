@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { EventsContext } from "../../store";
-import { addVoteAPI, resultForEventAPI } from "../../apis/events";
+import { EventsContext } from "../../../../store";
+import { addVoteAPI, resultForEventAPI } from "../../../../apis/events";
 
 const VoteForm: React.FC = () => {
   const [state, dispatch] = useContext(EventsContext);

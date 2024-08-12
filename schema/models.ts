@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 
+import { EventProps, IUser } from "./types";
+
 const event = new Schema({
   name: {
     type: "string",
@@ -27,4 +29,24 @@ const event = new Schema({
   },
 });
 
-export const ShuffleEvent = model("Event", event, "events");
+export const ShuffleEvent = model<EventProps>("Event", event, "events");
+
+// Define the User interface extending Mongoose's Document
+
+// Create the User schema
+const UserSchema: Schema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+// Create and export the User model
+export const User = model<IUser>("User", UserSchema);

@@ -3,6 +3,15 @@
 <b>Operations</b>
 
 <ul>
+  <li>Public Pages
+    <ul><li>Login</li><li>Register</li></ul>
+  </li>
+  <li>Public Pages
+    <ul><li>Events(/)</li></ul>
+  </li>
+</ul>
+
+<ul>
   <li>Create an Event</li>
   <li>Get the info about all the events</li>
   <li>Get the info on a specific event</li>

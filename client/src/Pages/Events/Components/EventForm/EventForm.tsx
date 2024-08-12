@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { EventsContext } from "../../store";
-import { createEventAPI } from "../../apis/events";
-import { EventProp } from "../../types";
+import { EventsContext } from "../../../../store";
+import { createEventAPI } from "../../../../apis/events";
+import { EventProp } from "../../../../types";
 const EventForm: React.FC = () => {
   const [, dispatch] = useContext(EventsContext);
 

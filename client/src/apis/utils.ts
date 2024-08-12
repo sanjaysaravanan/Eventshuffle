@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL || "http://localhost:8000/api/v1";
+const API_URL = process.env.BE_URL;
 
 // Simple function to handle the API request
 // handle path, payload and parsing
@@ -18,6 +18,7 @@ export const handleApi = async (
         : undefined,
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        Authorization: localStorage.getItem("token") || "",
       },
     });
 

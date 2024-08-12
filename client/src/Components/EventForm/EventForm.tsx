@@ -38,11 +38,17 @@ const EventForm: React.FC = () => {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch({ type: "toggle_loading", payload: true });
-    const { id } = await createEventAPI(formState as EventProp);
-    dispatch({ type: "toggle_loading", payload: false });
-    dispatch({ type: "toggle_add_form", payload: false });
-    dispatch({ type: "add_new_event", payload: { id, ...formState } });
+    try {
+      dispatch({ type: "toggle_loading", payload: true });
+      const { id } = await createEventAPI(formState as EventProp);
+      dispatch({ type: "toggle_loading", payload: false });
+      dispatch({ type: "toggle_add_form", payload: false });
+      dispatch({ type: "add_new_event", payload: { id, ...formState } });
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      dispatch({ type: "toggle_loading", payload: false });
+    }
   };
 
   return (

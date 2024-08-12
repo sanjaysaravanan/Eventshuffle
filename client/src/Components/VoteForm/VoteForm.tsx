@@ -40,32 +40,42 @@ const VoteForm: React.FC = () => {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      dispatch({ type: "toggle_loading", payload: true });
+      await addVoteAPI(state.selectedEvent?.event?.id || "", formState);
 
-    dispatch({ type: "toggle_loading", payload: true });
-    await addVoteAPI(state.selectedEvent?.event?.id || "", formState);
-    dispatch({ type: "toggle_loading", payload: false });
-    dispatch({ type: "clear_selected_event", payload: false });
-    if (votedIdStr) {
-      const votedIds = JSON.parse(votedIdStr);
-      (votedIds as string[]).push(state.selectedEvent?.event?.id || "");
-      localStorage.setItem("voted_ids", JSON.stringify(votedIds));
-    } else {
-      localStorage.setItem(
-        "voted_ids",
-        JSON.stringify([state.selectedEvent?.event?.id || ""])
-      );
+      dispatch({ type: "clear_selected_event", payload: false });
+      if (votedIdStr) {
+        const votedIds = JSON.parse(votedIdStr);
+        (votedIds as string[]).push(state.selectedEvent?.event?.id || "");
+        localStorage.setItem("voted_ids", JSON.stringify(votedIds));
+      } else {
+        localStorage.setItem(
+          "voted_ids",
+          JSON.stringify([state.selectedEvent?.event?.id || ""])
+        );
+      }
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      dispatch({ type: "toggle_loading", payload: false });
     }
   };
 
   useEffect(() => {
     const loadResult = async () => {
-      setLoading(true);
-      const apiResult = await resultForEventAPI(
-        state.selectedEvent?.event?.id || ""
-      );
+      try {
+        setLoading(true);
+        const apiResult = await resultForEventAPI(
+          state.selectedEvent?.event?.id || ""
+        );
 
-      setResult(apiResult);
-      setLoading(false);
+        setResult(apiResult);
+      } catch (err) {
+        alert((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if ((votedIds as string[]).includes(state.selectedEvent?.event?.id || "")) {

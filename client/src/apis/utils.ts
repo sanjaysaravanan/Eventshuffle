@@ -10,15 +10,24 @@ export const handleApi = async (
   reqOptions?: RequestInit,
   payload?: unknown
 ) => {
-  const response = await fetch(`${API_URL}/${path}`, {
-    ...(reqOptions || {}),
-    body: PAYLOAD_METHODS.includes(reqOptions?.method || "")
-      ? JSON.stringify(payload || "")
-      : undefined,
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  });
+  try {
+    const response = await fetch(`${API_URL}/${path}`, {
+      ...(reqOptions || {}),
+      body: PAYLOAD_METHODS.includes(reqOptions?.method || "")
+        ? JSON.stringify(payload || "")
+        : undefined,
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    });
 
-  return await response.json();
+    if (response.status >= 200 && response.status < 300) {
+      return await response.json();
+    } else {
+      const { msg = "" } = await response.json();
+      throw new Error(msg);
+    }
+  } catch (err) {
+    throw new Error((err as Error).message);
+  }
 };

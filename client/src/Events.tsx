@@ -54,11 +54,16 @@ const EventWrapper: React.FC = () => {
 
   useEffect(() => {
     const loadAllEvents = async () => {
-      dispatch({ type: "toggle_loading", payload: true });
-      const data = await getAllEvents();
+      try {
+        dispatch({ type: "toggle_loading", payload: true });
+        const data = await getAllEvents();
 
-      dispatch({ type: "load_events", payload: data });
-      dispatch({ type: "toggle_loading", payload: false });
+        dispatch({ type: "load_events", payload: data });
+      } catch (err) {
+        alert((err as Error).message);
+      } finally {
+        dispatch({ type: "toggle_loading", payload: false });
+      }
     };
 
     loadAllEvents();
